@@ -38,7 +38,7 @@
 
   </head>
   <body>
-    <table class="table">
+    <table class="table" id="myTable">
       <thead class="thead-dark">
         <tr>
           <th scope="col">#</th>
@@ -59,6 +59,7 @@
       <option value="email">Email</option>
     </select>
     <input type="text" id="search" placeholder="search" autocomplete="off" onkeyup="filterSearch()">
+    <button id="sortingButton" value="sort" onclick="sort()" class="sorted">Sort</button>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -103,7 +104,54 @@
       console.log(val)
       function filterSearch(){
       }
-
+      let sortingButton = document.querySelector("#sortingButton")
+      function sort(){
+      if(sortingButton.classList.contains("sorted")){
+        var table, rows, switching, i, x, y, shouldSwitch;
+          table = document.getElementById("myTable");
+          switching = true;
+          while (switching) {
+            switching = false;
+            rows = table.rows;
+            for (i = 1; i < (rows.length - 1); i++) {
+              shouldSwitch = false;
+              x = rows[i].getElementsByTagName("TD")[0];
+              y = rows[i + 1].getElementsByTagName("TD")[0];
+              if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                shouldSwitch = true;
+                break;
+              }
+            }
+            if (shouldSwitch) {
+              rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+              switching = true;
+            }
+         
+          }
+      } else {
+        var table, rows, switching, i, x, y, shouldSwitch;
+          table = document.getElementById("myTable");
+          switching = true;
+          while (switching) {
+            switching = false;
+            rows = table.rows;
+            for (i = 1; i < (rows.length - 1); i++) {
+              shouldSwitch = false;
+              x = rows[i].getElementsByTagName("TD")[0];
+              y = rows[i + 1].getElementsByTagName("TD")[0];
+              if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                shouldSwitch = true;
+                break;
+              }
+            }
+            if (shouldSwitch) {
+              rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+              switching = true;
+            }      
+          }
+      }
+      sortingButton.classList.toggle("sorted")
+  }
     
     </script>
   </body>
