@@ -45,6 +45,7 @@
           <th scope="col">Name</th>
           <th scope="col">Username</th>
           <th scope="col">email</th>
+          <th scope="col">addresses</th>
         </tr>
       </thead>
       <tbody id="querySel">
@@ -52,6 +53,12 @@
       </tbody>
     </table>
 
+    <select name="select" id="selection">
+      <option value="name">Name</option>
+      <option value="username">Username</option>
+      <option value="email">Email</option>
+    </select>
+    <input type="text" id="search" placeholder="search" autocomplete="off" onkeyup="filterSearch()">
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -59,27 +66,31 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
     <script>
-
+      let names = [];
+      let usernames = [];
+      let emails = [];
       window.onload = async function getUsers(){
         try{
           let usersData = await fetch("https://jsonplaceholder.typicode.com/users")
           if(usersData.ok){
             let userDataArray = await usersData.json()
-            console.log(userDataArray)
             let tableRow = document.querySelector("#querySel")
-            
+            console.log(userDataArray[0].address.city)
+            let addresses = 0;
 
             for(let i=0; i<userDataArray.length; i++){              
-              console.log(userDataArray[i].id)
               tableRow.innerHTML+=              
-              `
-              <tr>
+              `<tr>
                 <th scope="row">${userDataArray[i].id}</th>
                 <td>${userDataArray[i].name}</td>
                 <td>${userDataArray[i].username}</td>
                 <td>${userDataArray[i].email}</td>
-              </tr>
-              ` 
+                <td>${userDataArray[i].address.street}, ${userDataArray[i].address.suite}, ${userDataArray[i].address.city} (${userDataArray[i].address.zipcode})</td>
+              </tr>` 
+
+              names.push(userDataArray[i].name)
+              usernames.push(userDataArray[i].username)
+              emails.push(userDataArray[i].email)
             }
           }
         }
@@ -88,8 +99,11 @@
         }
       }
 
+      let val = document.querySelector("#search").value
+      console.log(val)
+      function filterSearch(){
+      }
 
-      
     
     </script>
   </body>
